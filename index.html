@@ -64,7 +64,7 @@
                 ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
             };
 
-            // CONTESTO STORICO: puntano ai file locali richiesti
+            // CONTESTO STORICO
             const historicalContext = {
                 images: [
                     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPBp_kMAGRtNs6Ck8S9z-P8J81TN1UPb7MWQ&s',
@@ -77,7 +77,7 @@
             const authors = {
                 duchamp: {
                     name: "Marcel Duchamp",
-                    role: "Il Re del Dada",
+                    role: "Il Re del Dadaismo",
                     bio: "L'artista che ha trasformato un orinatoio in un'opera d'arte, sfidando il mondo intero a ridefinire cosa sia 'bello'.",
                     image: "https://media.revistaad.es/photos/6972161c4596bdd6681cfc09/1:1/w_2560%2Cc_limit/GettyImages-514690202.jpg"
                 },
@@ -108,13 +108,13 @@
                 <div className={selectedImage ? "no-scroll" : ""}>
                     {/* Header Splash */}
                     <div className="h-screen flex flex-col justify-center items-center text-center p-5">
-                        <h1 className="text-7xl md:text-9xl font-black uppercase mb-4 tracking-tighter">Dada & Surreal</h1>
+                        <h1 className="text-5xl md:text-8xl font-black uppercase mb-4 tracking-tighter">Dadaismo e Surrealismo</h1>
                         <p className="text-xl text-zinc-500 uppercase tracking-[10px]">Arte come Rivoluzione</p>
                     </div>
 
-                    {/* Contesto Storico e Dadaismo*/}
+                    {/* Contesto Storico e Dadaismo */}
                     <section className="max-w-6xl mx-auto px-5 mb-32">
-                        <h2 className="text-4xl font-black uppercase mb-10 border-b border-white pb-4">Il Contesto Storico</h2>
+                        <h2 className="text-4xl font-black uppercase mb-10 border-b border-white pb-4">Il Contesto Storico e il Dadaismo</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                             {historicalContext.images.map((img, i) => (
                                 <div key={i} className="bg-zinc-900 rounded-2xl overflow-hidden h-64 border border-zinc-800 shadow-xl">
