@@ -1,33 +1,12 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dadaismo & Surrealismo - Progetto Finale</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <style>
-        body { background-color: black; color: white; margin: 0; font-family: sans-serif; overflow-x: hidden; }
-        canvas { touch-action: none; cursor: crosshair; }
-        .no-scroll { overflow: hidden; }
-        input[type="range"] { accent-color: white; }
-    </style>
-</head>
-<body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState, useRef } = React;
-
+<script type="text/babel">
         function App() {
-            const [selectedImage, setSelectedImage] = useState(null);
-            const [drawing, setDrawing] = useState(false);
-            const [brushColor, setBrushColor] = useState('#ff0000');
-            const [brushSize, setBrushSize] = useState(5);
-            const [zoom, setZoom] = useState(1);
-            const canvasRef = useRef(null);
+            // Usiamo direttamente React.useState e React.useRef senza destrutturazione esterna
+            const [selectedImage, setSelectedImage] = React.useState(null);
+            const [drawing, setDrawing] = React.useState(false);
+            const [brushColor, setBrushColor] = React.useState('#ff0000');
+            const [brushSize, setBrushSize] = React.useState(5);
+            const [zoom, setZoom] = React.useState(1);
+            const canvasRef = React.useRef(null);
 
             const getCoords = (e) => {
                 const canvas = canvasRef.current;
@@ -254,5 +233,3 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
-</body>
-</html>
