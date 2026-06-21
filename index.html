@@ -1,16 +1,44 @@
-<script type="text/babel">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dadaismo & Surrealismo - Progetto Finale</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Versioni specifiche, stabili e bloccate di React 18 per evitare sorprese -->
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    
+    <!-- Versione di Babel standalone bloccata a una release ultra-compatibile che non genera l'errore "import" -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.20.12/babel.min.js" crossorigin></script>
+
+    <style>
+        body { background-color: black; color: white; margin: 0; font-family: sans-serif; overflow-x: hidden; }
+        canvas { touch-action: none; cursor: crosshair; }
+        .no-scroll { overflow: hidden; }
+        input[type="range"] { accent-color: white; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Forziamo Babel a compilare senza cercare moduli finti esterni -->
+    <script type="text/babel" data-plugins="">
+        const { useState, useRef } = React;
+
         function App() {
-            // Usiamo direttamente React.useState e React.useRef senza destrutturazione esterna
-            const [selectedImage, setSelectedImage] = React.useState(null);
-            const [drawing, setDrawing] = React.useState(false);
-            const [brushColor, setBrushColor] = React.useState('#ff0000');
-            const [brushSize, setBrushSize] = React.useState(5);
-            const [zoom, setZoom] = React.useState(1);
-            const canvasRef = React.useRef(null);
+            const [selectedImage, setSelectedImage] = useState(null);
+            const [drawing, setDrawing] = useState(false);
+            const [brushColor, setBrushColor] = useState('#ff0000');
+            const [brushSize, setBrushSize] = useState(5);
+            const [zoom, setZoom] = useState(1);
+            const canvasRef = useRef(null);
 
             const getCoords = (e) => {
                 const canvas = canvasRef.current;
-                if (!canvas) return { x: 0, y: 0 };
                 const rect = canvas.getBoundingClientRect();
                 const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                 const clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -69,6 +97,7 @@
                 }
             };
 
+            // OPERE IN ORDINE CRONOLOGICO
             const dadaWorks = [
                 { title: "Ruota di Bicicletta", year: "1913", artist: "Duchamp", image: "https://www.vivigreen.eu/wp-content/uploads/2022/03/duchamp-ruota.jpg", desc: "Il primo ready-made. Una ruota su uno sgabello.", sig: "Unione di due oggetti comuni.", msg: "L'arte è scelta, non solo manufatto.", cor: "Dadaismo" },
                 { title: "Le Grand Verre", year: "1915-23", artist: "Duchamp", image: "https://www.culturefuture.net/wp-content/uploads/2021/03/1958-Le-grand-verre-au-Philadelphia-Museum-of-Art.jpeg", desc: "Opera complessa su vetro.", sig: "Meccanismi del desiderio.", msg: "L'arte come enigma intellettuale.", cor: "Dadaismo" },
@@ -117,7 +146,7 @@
                     {/* Duchamp */}
                     <section className="max-w-6xl mx-auto px-5 mb-24">
                         <div className="flex flex-col md:flex-row gap-10 items-center mb-16 bg-zinc-900 p-10 rounded-[40px] border border-white/5">
-                            <img src={authors.duchamp.image} className="w-64 h-64 rounded-full object-cover border-4 border-white shadow-2xl" alt={authors.duchamp.name} />
+                            <img src={authors.duchamp.image} className="w-64 h-64 rounded-full object-cover border-4 border-white shadow-2xl" />
                             <div>
                                 <h2 className="text-6xl font-black mb-2">{authors.duchamp.name}</h2>
                                 <p className="text-2xl text-zinc-500 mb-4 font-bold uppercase tracking-widest">{authors.duchamp.role}</p>
@@ -128,7 +157,7 @@
                             {dadaWorks.map((w, i) => (
                                 <div key={i} className="bg-zinc-900/50 rounded-[40px] p-8 border border-white/5 hover:border-white/20 transition-all group">
                                     <div className="relative overflow-hidden rounded-3xl mb-6">
-                                        <img src={w.image} className="w-full h-80 object-cover cursor-zoom-in transition duration-700 group-hover:scale-105" onClick={() => setSelectedImage(w)} alt={w.title} />
+                                        <img src={w.image} className="w-full h-80 object-cover cursor-zoom-in transition duration-700 group-hover:scale-105" onClick={() => setSelectedImage(w)} />
                                         <div className="absolute top-4 right-4 bg-black/80 px-4 py-2 rounded-full text-sm font-bold">{w.year}</div>
                                     </div>
                                     <h3 className="text-3xl font-black mb-4">{w.title}</h3>
@@ -153,7 +182,7 @@
                     {/* Dalì */}
                     <section className="max-w-6xl mx-auto px-5 pb-32">
                         <div className="flex flex-col md:flex-row-reverse gap-10 items-center mb-16 bg-zinc-900 p-10 rounded-[40px] border border-yellow-500/10">
-                            <img src={authors.dali.image} className="w-64 h-64 rounded-full object-cover border-4 border-yellow-500 shadow-2xl shadow-yellow-500/10" alt={authors.dali.name} />
+                            <img src={authors.dali.image} className="w-64 h-64 rounded-full object-cover border-4 border-yellow-500 shadow-2xl shadow-yellow-500/10" />
                             <div className="md:text-right">
                                 <h2 className="text-6xl font-black mb-2">{authors.dali.name}</h2>
                                 <p className="text-2xl text-zinc-500 mb-4 font-bold uppercase tracking-widest">{authors.dali.role}</p>
@@ -164,12 +193,12 @@
                             {surrealWorks.map((w, i) => (
                                 <div key={i} className="bg-zinc-900/50 rounded-[40px] p-8 border border-white/5 hover:border-yellow-500/20 transition-all group">
                                     <div className="relative overflow-hidden rounded-3xl mb-6">
-                                        <img src={w.image} className="w-full h-80 object-cover cursor-zoom-in transition duration-700 group-hover:scale-105" onClick={() => setSelectedImage(w)} alt={w.title} />
+                                        <img src={w.image} className="w-full h-80 object-cover cursor-zoom-in transition duration-700 group-hover:scale-105" onClick={() => setSelectedImage(w)} />
                                         <div className="absolute top-4 right-4 bg-yellow-600 px-4 py-2 rounded-full text-sm font-bold">{w.year}</div>
                                     </div>
                                     <h3 className="text-3xl font-black mb-4">{w.title}</h3>
                                     <p className="text-zinc-400 mb-6 text-lg">{w.desc}</p>
-                                    <div className="space-y-3 text-sm border-t border-white/10 pt-6">
+                                    <div className="space-y-3 text-sm border-t border-yellow-500/10 pt-6">
                                         <p><span className="text-yellow-500/50 uppercase font-bold mr-2">Significato:</span> {w.sig}</p>
                                         <p><span className="text-yellow-500/50 uppercase font-bold mr-2">Messaggio:</span> {w.msg}</p>
                                     </div>
@@ -192,7 +221,7 @@
                             <div className="flex-1 relative overflow-auto bg-zinc-950 flex items-center justify-center p-4">
                                 <div className="relative" style={{ transform: `scale(${zoom})`, transformOrigin: 'center center', transition: 'transform 0.2s cubic-bezier(0.1, 0.7, 1.0, 0.1)' }}>
                                     <div className="relative inline-block">
-                                        <img src={selectedImage.image} className="max-w-[85vw] max-h-[65vh] object-contain shadow-[0_0_100px_rgba(255,255,255,0.05)]" alt={selectedImage.title} />
+                                        <img src={selectedImage.image} className="max-w-[85vw] max-h-[65vh] object-contain shadow-[0_0_100px_rgba(255,255,255,0.05)]" />
                                         <canvas 
                                             ref={canvasRef}
                                             width={1920} height={1080}
@@ -233,3 +262,5 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
+</body>
+</html>
