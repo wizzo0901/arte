@@ -5,15 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dadaismo & Surrealismo - Progetto Finale</title>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS per la grafica -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Versioni specifiche, stabili e bloccate di React 18 per evitare sorprese -->
-    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
-    
-    <!-- Versione di Babel standalone bloccata a una release ultra-compatibile che non genera l'errore "import" -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.20.12/babel.min.js" crossorigin></script>
 
     <style>
         body { background-color: black; color: white; margin: 0; font-family: sans-serif; overflow-x: hidden; }
@@ -23,244 +16,259 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <!-- Forziamo Babel a compilare senza cercare moduli finti esterni -->
-    <script type="text/babel" data-plugins="">
-        const { useState, useRef } = React;
+    <!-- INTERFACCIA PRINCIPALE (HTML/TAILWIND SNELLO) -->
+    <div id="main-content">
+        <!-- Header Splash -->
+        <div class="h-screen flex flex-col justify-center items-center text-center p-5">
+            <h1 class="text-5xl md:text-8xl font-black uppercase mb-4 tracking-tighter">Dadaismo e Surrealismo</h1>
+            <p class="text-xl text-zinc-500 uppercase tracking-[10px]">Arte come Rivoluzione</p>
+        </div>
 
-        function App() {
-            const [selectedImage, setSelectedImage] = useState(null);
-            const [drawing, setDrawing] = useState(false);
-            const [brushColor, setBrushColor] = useState('#ff0000');
-            const [brushSize, setBrushSize] = useState(5);
-            const [zoom, setZoom] = useState(1);
-            const canvasRef = useRef(null);
-
-            const getCoords = (e) => {
-                const canvas = canvasRef.current;
-                const rect = canvas.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                return {
-                    x: (clientX - rect.left) * (canvas.width / rect.width),
-                    y: (clientY - rect.top) * (canvas.height / rect.height)
-                };
-            };
-
-            const startDrawing = (e) => {
-                const { x, y } = getCoords(e);
-                const ctx = canvasRef.current.getContext('2d');
-                ctx.beginPath();
-                ctx.moveTo(x, y);
-                setDrawing(true);
-            };
-
-            const draw = (e) => {
-                if (!drawing) return;
-                const { x, y } = getCoords(e);
-                const ctx = canvasRef.current.getContext('2d');
-                ctx.strokeStyle = brushColor;
-                ctx.lineWidth = brushSize * (1/zoom);
-                ctx.lineCap = 'round';
-                ctx.lineTo(x, y);
-                ctx.stroke();
-            };
-
-            const clear = () => {
-                const ctx = canvasRef.current.getContext('2d');
-                ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-            };
-
-            // CONTESTO STORICO
-            const historicalContext = {
-                images: [
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPBp_kMAGRtNs6Ck8S9z-P8J81TN1UPb7MWQ&s',
-                    'images1.jpg', 
-                    'images2.jpg'
-                ],
-                points: ["Fine della Prima Guerra Mondiale", "Crisi del Positivismo", "Nascita della Psicoanalisi (Freud)", "Rifiuto della razionalità borghese"]
-            };
-
-            const authors = {
-                duchamp: {
-                    name: "Marcel Duchamp",
-                    role: "Il Re del Dadaismo",
-                    bio: "L'artista che ha trasformato un orinatoio in un'opera d'arte, sfidando il mondo intero a ridefinire cosa sia 'bello'.",
-                    image: "https://media.revistaad.es/photos/6972161c4596bdd6681cfc09/1:1/w_2560%2Cc_limit/GettyImages-514690202.jpg"
-                },
-                dali: {
-                    name: "Salvador Dalí",
-                    role: "Genio del Surrealismo",
-                    bio: "Il pittore che ha dato forma ai sogni e agli incubi, rendendo solido il tempo e visibile l'inconscio.",
-                    image: "https://www.tuttiquadri.it/cdn/shop/files/salvador-dali_1.jpg?v=1760205596"
-                }
-            };
-
-            // OPERE IN ORDINE CRONOLOGICO
-            const dadaWorks = [
-                { title: "Ruota di Bicicletta", year: "1913", artist: "Duchamp", image: "https://www.vivigreen.eu/wp-content/uploads/2022/03/duchamp-ruota.jpg", desc: "Il primo ready-made. Una ruota su uno sgabello.", sig: "Unione di due oggetti comuni.", msg: "L'arte è scelta, non solo manufatto.", cor: "Dadaismo" },
-                { title: "Le Grand Verre", year: "1915-23", artist: "Duchamp", image: "https://www.culturefuture.net/wp-content/uploads/2021/03/1958-Le-grand-verre-au-Philadelphia-Museum-of-Art.jpeg", desc: "Opera complessa su vetro.", sig: "Meccanismi del desiderio.", msg: "L'arte come enigma intellettuale.", cor: "Dadaismo" },
-                { title: "Fountain", year: "1917", artist: "Duchamp", image: "https://staticfanpage.akamaized.net/wp-content/uploads/2017/04/4088303823-3e58d3394b-b.jpg", desc: "Un orinatoio firmato R. Mutt.", sig: "Lo scandalo supremo.", msg: "L'idea conta più dell'esecuzione.", cor: "Dadaismo" },
-                { title: "L.H.O.O.Q.", year: "1919", artist: "Duchamp", image: "https://arteref.com/wp-content/uploads/2013/03/L.H.O.O.Q..jpg", desc: "La Gioconda con i baffi.", sig: "Provocazione e ironia.", msg: "Niente è sacro, neanche i classici.", cor: "Dadaismo" }
-            ];
-
-            const surrealWorks = [
-                { title: "Persistenza della Memoria", year: "1931", artist: "Dalí", image: "https://upload.wikimedia.org/wikipedia/en/d/dd/The_Persistence_of_Memory.jpg", desc: "Orologi molli in un deserto.", sig: "Tempo che si scioglie.", msg: "La soggettività del tempo.", cor: "Surrealismo" },
-                { title: "Metamorfosi di Narciso", year: "1937", artist: "Dalí", image: "https://www.lachiavedisophia.com/wp-content/uploads/2017/03/metamorfosi-di-narciso_La-chiave-di-Sophia.jpg", desc: "Narciso che diventa una mano.", sig: "Trasformazione psicologica.", msg: "La fragilità dell'ego.", cor: "Surrealismo" },
-                { title: "Cristo di S. Giovanni", year: "1951", artist: "Dalí", image: "https://www.passion-estampes.com/deco/affiches/dali/dali-christ-saint-jean-de-la-croix.jpg", desc: "Cristo visto dall'alto.", sig: "Visione cosmica della croce.", msg: "L'armonia divina del cosmo.", cor: "Surrealismo" },
-                { title: "Ultima Cena", year: "1955", artist: "Dalí", image: "https://cultura.biografieonline.it/wp-content/uploads/2014/08/Ultima-cena-Salvador-Dali.jpg", desc: "Visione sacra e matematica.", sig: "Misticismo e perfezione.", msg: "Il sacro incontra la scienza.", cor: "Surrealismo" }
-            ];
-
-            return (
-                <div className={selectedImage ? "no-scroll" : ""}>
-                    {/* Header Splash */}
-                    <div className="h-screen flex flex-col justify-center items-center text-center p-5">
-                        <h1 className="text-5xl md:text-8xl font-black uppercase mb-4 tracking-tighter">Dadaismo e Surrealismo</h1>
-                        <p className="text-xl text-zinc-500 uppercase tracking-[10px]">Arte come Rivoluzione</p>
-                    </div>
-
-                    {/* Contesto Storico e Dadaismo */}
-                    <section className="max-w-6xl mx-auto px-5 mb-32">
-                        <h2 className="text-4xl font-black uppercase mb-10 border-b border-white pb-4">Il Contesto Storico e il Dadaismo</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                            {historicalContext.images.map((img, i) => (
-                                <div key={i} className="bg-zinc-900 rounded-2xl overflow-hidden h-64 border border-zinc-800 shadow-xl">
-                                    <img src={img} className="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500" alt="Contesto Storico" />
-                                </div>
-                            ))}
-                        </div>
-                        <div className="bg-zinc-900 p-10 rounded-[40px] grid md:grid-cols-2 gap-8 items-center">
-                            <div>
-                                <p className="text-zinc-500 uppercase font-bold text-xs mb-4 tracking-widest">Le Radici del Cambiamento</p>
-                                <ul className="space-y-3">
-                                    {historicalContext.points.map((p, i) => <li key={i} className="text-xl font-medium">• {p}</li>)}
-                                </ul>
-                            </div>
-                            <p className="text-zinc-400 italic text-2xl leading-relaxed border-l-2 border-white/20 pl-8">
-                                "Contro la follia della guerra, l'unica risposta sensata è l'assurdo."
-                            </p>
-                        </div>
-                    </section>
-
-                    {/* Duchamp */}
-                    <section className="max-w-6xl mx-auto px-5 mb-24">
-                        <div className="flex flex-col md:flex-row gap-10 items-center mb-16 bg-zinc-900 p-10 rounded-[40px] border border-white/5">
-                            <img src={authors.duchamp.image} className="w-64 h-64 rounded-full object-cover border-4 border-white shadow-2xl" />
-                            <div>
-                                <h2 className="text-6xl font-black mb-2">{authors.duchamp.name}</h2>
-                                <p className="text-2xl text-zinc-500 mb-4 font-bold uppercase tracking-widest">{authors.duchamp.role}</p>
-                                <p className="text-xl text-zinc-300 leading-relaxed italic">{authors.duchamp.bio}</p>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                            {dadaWorks.map((w, i) => (
-                                <div key={i} className="bg-zinc-900/50 rounded-[40px] p-8 border border-white/5 hover:border-white/20 transition-all group">
-                                    <div className="relative overflow-hidden rounded-3xl mb-6">
-                                        <img src={w.image} className="w-full h-80 object-cover cursor-zoom-in transition duration-700 group-hover:scale-105" onClick={() => setSelectedImage(w)} />
-                                        <div className="absolute top-4 right-4 bg-black/80 px-4 py-2 rounded-full text-sm font-bold">{w.year}</div>
-                                    </div>
-                                    <h3 className="text-3xl font-black mb-4">{w.title}</h3>
-                                    <p className="text-zinc-400 mb-6 text-lg">{w.desc}</p>
-                                    <div className="space-y-3 text-sm border-t border-white/10 pt-6">
-                                        <p><span className="text-zinc-500 uppercase font-bold mr-2">Significato:</span> {w.sig}</p>
-                                        <p><span className="text-zinc-500 uppercase font-bold mr-2">Messaggio:</span> {w.msg}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    {/* SEZIONE AGGIUNTIVA: Il Surrealismo */}
-                    <section className="max-w-6xl mx-auto px-5 mb-24">
-                        <h2 className="text-5xl font-black uppercase mb-10 border-b border-yellow-500/30 pb-4 tracking-tight text-yellow-500">Il Surrealismo</h2>
-                        <div className="bg-zinc-900 rounded-[40px] overflow-hidden border border-yellow-500/10 shadow-2xl">
-                            <img src="images3.jpg" className="w-full h-[400px] object-cover grayscale hover:grayscale-0 transition duration-700" alt="Surrealismo" />
-                        </div>
-                    </section>
-
-                    {/* Dalì */}
-                    <section className="max-w-6xl mx-auto px-5 pb-32">
-                        <div className="flex flex-col md:flex-row-reverse gap-10 items-center mb-16 bg-zinc-900 p-10 rounded-[40px] border border-yellow-500/10">
-                            <img src={authors.dali.image} className="w-64 h-64 rounded-full object-cover border-4 border-yellow-500 shadow-2xl shadow-yellow-500/10" />
-                            <div className="md:text-right">
-                                <h2 className="text-6xl font-black mb-2">{authors.dali.name}</h2>
-                                <p className="text-2xl text-zinc-500 mb-4 font-bold uppercase tracking-widest">{authors.dali.role}</p>
-                                <p className="text-xl text-zinc-300 leading-relaxed italic">{authors.dali.bio}</p>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                            {surrealWorks.map((w, i) => (
-                                <div key={i} className="bg-zinc-900/50 rounded-[40px] p-8 border border-white/5 hover:border-yellow-500/20 transition-all group">
-                                    <div className="relative overflow-hidden rounded-3xl mb-6">
-                                        <img src={w.image} className="w-full h-80 object-cover cursor-zoom-in transition duration-700 group-hover:scale-105" onClick={() => setSelectedImage(w)} />
-                                        <div className="absolute top-4 right-4 bg-yellow-600 px-4 py-2 rounded-full text-sm font-bold">{w.year}</div>
-                                    </div>
-                                    <h3 className="text-3xl font-black mb-4">{w.title}</h3>
-                                    <p className="text-zinc-400 mb-6 text-lg">{w.desc}</p>
-                                    <div className="space-y-3 text-sm border-t border-yellow-500/10 pt-6">
-                                        <p><span className="text-yellow-500/50 uppercase font-bold mr-2">Significato:</span> {w.sig}</p>
-                                        <p><span className="text-yellow-500/50 uppercase font-bold mr-2">Messaggio:</span> {w.msg}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    {/* MODALE FULLSCREEN CON ZOOM E DISEGNO */}
-                    {selectedImage && (
-                        <div className="fixed inset-0 bg-black z-50 flex flex-col h-screen overflow-hidden">
-                            <div className="w-full flex justify-between p-6 items-center bg-zinc-900/90 backdrop-blur-md">
-                                <div>
-                                    <h2 className="text-2xl font-black uppercase tracking-tighter">{selectedImage.title} ({selectedImage.year})</h2>
-                                    <p className="text-sm text-zinc-500 font-bold uppercase">{selectedImage.artist}</p>
-                                </div>
-                                <button onClick={() => { setSelectedImage(null); setZoom(1); }} className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-3xl hover:bg-white hover:text-black transition">&times;</button>
-                            </div>
-
-                            <div className="flex-1 relative overflow-auto bg-zinc-950 flex items-center justify-center p-4">
-                                <div className="relative" style={{ transform: `scale(${zoom})`, transformOrigin: 'center center', transition: 'transform 0.2s cubic-bezier(0.1, 0.7, 1.0, 0.1)' }}>
-                                    <div className="relative inline-block">
-                                        <img src={selectedImage.image} className="max-w-[85vw] max-h-[65vh] object-contain shadow-[0_0_100px_rgba(255,255,255,0.05)]" />
-                                        <canvas 
-                                            ref={canvasRef}
-                                            width={1920} height={1080}
-                                            className="absolute inset-0 w-full h-full pointer-events-auto"
-                                            onMouseDown={startDrawing}
-                                            onMouseMove={draw}
-                                            onMouseUp={() => setDrawing(false)}
-                                            onTouchStart={startDrawing}
-                                            onTouchMove={draw}
-                                            onTouchEnd={() => setDrawing(false)}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="w-full p-8 flex flex-wrap justify-center gap-10 items-center bg-zinc-900/90 backdrop-blur-md border-t border-white/5">
-                                <div className="flex flex-col items-center gap-2">
-                                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Ingrandimento Immagine</span>
-                                    <input type="range" min="1" max="5" step="0.1" value={zoom} onChange={(e) => setZoom(parseFloat(e.target.value))} className="w-48 h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer" />
-                                </div>
-                                <div className="flex flex-col items-center gap-2">
-                                    <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Spessore Pennello</span>
-                                    <input type="range" min="1" max="30" value={brushSize} onChange={(e) => setBrushSize(parseInt(e.target.value))} className="w-48 h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer" />
-                                </div>
-                                <div className="flex gap-3">
-                                    {['#ff0000', '#00ff00', '#00aaff', '#ffffff', '#ffff00'].map(c => (
-                                        <button key={c} className={`w-10 h-10 rounded-full border-2 transition-transform hover:scale-110 ${brushColor === c ? 'border-white scale-125' : 'border-black/50'}`} style={{backgroundColor: c}} onClick={() => setBrushColor(c)} />
-                                    ))}
-                                </div>
-                                <button onClick={clear} className="bg-white text-black px-8 py-3 rounded-full font-black uppercase text-xs tracking-widest hover:bg-zinc-200 transition">Svuota Lavagna</button>
-                            </div>
-                        </div>
-                    )}
+        <!-- Contesto Storico -->
+        <section class="max-w-6xl mx-auto px-5 mb-32">
+            <h2 class="text-4xl font-black uppercase mb-10 border-b border-white pb-4">Il Contesto Storico e il Dadaismo</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-zinc-900 rounded-2xl overflow-hidden h-64 border border-zinc-800 shadow-xl">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPBp_kMAGRtNs6Ck8S9z-P8J81TN1UPb7MWQ&s" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500" alt="Contesto">
                 </div>
-            );
+                <div class="bg-zinc-900 rounded-2xl overflow-hidden h-64 border border-zinc-800 shadow-xl">
+                    <img src="images1.jpg" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500" alt="Contesto">
+                </div>
+                <div class="bg-zinc-900 rounded-2xl overflow-hidden h-64 border border-zinc-800 shadow-xl">
+                    <img src="images2.jpg" class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500" alt="Contesto">
+                </div>
+            </div>
+            <div class="bg-zinc-900 p-10 rounded-[40px] grid md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-zinc-500 uppercase font-bold text-xs mb-4 tracking-widest">Le Radici del Cambiamento</p>
+                    <ul class="space-y-3">
+                        <li class="text-xl font-medium">• Fine della Prima Guerra Mondiale</li>
+                        <li class="text-xl font-medium">• Crisi del Positivismo</li>
+                        <li class="text-xl font-medium">• Nascita della Psicoanalisi (Freud)</li>
+                        <li class="text-xl font-medium">• Rifiuto della razionalità borghese</li>
+                    </ul>
+                </div>
+                <p class="text-zinc-400 italic text-2xl leading-relaxed border-l-2 border-white/20 pl-8">
+                    "Contro la follia della guerra, l'unica risposta sensata è l'assurdo."
+                </p>
+            </div>
+        </section>
+
+        <!-- Duchamp -->
+        <section class="max-w-6xl mx-auto px-5 mb-24">
+            <div class="flex flex-col md:flex-row gap-10 items-center mb-16 bg-zinc-900 p-10 rounded-[40px] border border-white/5">
+                <img src="https://media.revistaad.es/photos/6972161c4596bdd6681cfc09/1:1/w_2560%2Cc_limit/GettyImages-514690202.jpg" class="w-64 h-64 rounded-full object-cover border-4 border-white shadow-2xl" alt="Duchamp">
+                <div>
+                    <h2 class="text-6xl font-black mb-2">Marcel Duchamp</h2>
+                    <p class="text-2xl text-zinc-500 mb-4 font-bold uppercase tracking-widest">Il Re del Dadaismo</p>
+                    <p class="text-xl text-zinc-300 leading-relaxed italic">L'artista che ha trasformato un orinatoio in un'opera d'arte, sfidando il mondo intero a ridefinire cosa sia 'bello'.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="dada-container">
+                <!-- Generato via JS -->
+            </div>
+        </section>
+
+        <!-- Il Surrealismo -->
+        <section class="max-w-6xl mx-auto px-5 mb-24">
+            <h2 class="text-5xl font-black uppercase mb-10 border-b border-yellow-500/30 pb-4 tracking-tight text-yellow-500">Il Surrealismo</h2>
+            <div class="bg-zinc-900 rounded-[40px] overflow-hidden border border-yellow-500/10 shadow-2xl">
+                <img src="images3.jpg" class="w-full h-[400px] object-cover grayscale hover:grayscale-0 transition duration-700" alt="Surrealismo" />
+            </div>
+        </section>
+
+        <!-- Dalì -->
+        <section class="max-w-6xl mx-auto px-5 pb-32">
+            <div class="flex flex-col md:flex-row-reverse gap-10 items-center mb-16 bg-zinc-900 p-10 rounded-[40px] border border-yellow-500/10">
+                <img src="https://www.tuttiquadri.it/cdn/shop/files/salvador-dali_1.jpg?v=1760205596" class="w-64 h-64 rounded-full object-cover border-4 border-yellow-500 shadow-2xl" alt="Dalì">
+                <div class="md:text-right">
+                    <h2 class="text-6xl font-black mb-2">Salvador Dalí</h2>
+                    <p class="text-2xl text-zinc-500 mb-4 font-bold uppercase tracking-widest">Genio del Surrealismo</p>
+                    <p class="text-xl text-zinc-300 leading-relaxed italic">Il pittore che ha dato forma ai sogni e agli incubi, rendendo solido il tempo e visibile l'inconscio.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="surreal-container">
+                <!-- Generato via JS -->
+            </div>
+        </section>
+    </div>
+
+    <!-- MODALE INTERATTIVO PER IL DISEGNO (A SCARICAMENTO DIRETTO) -->
+    <div id="art-modal" class="fixed inset-0 bg-black z-50 flex flex-col h-screen overflow-hidden hidden">
+        <div class="w-full flex justify-between p-6 items-center bg-zinc-900/90 backdrop-blur-md">
+            <div>
+                <h2 id="modal-title" class="text-2xl font-black uppercase tracking-tighter">Titolo</h2>
+                <p id="modal-artist" class="text-sm text-zinc-500 font-bold uppercase">Artista</p>
+            </div>
+            <button onclick="closeModal()" class="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-3xl hover:bg-white hover:text-black transition">&times;</button>
+        </div>
+
+        <div class="flex-1 relative overflow-auto bg-zinc-950 flex items-center justify-center p-4">
+            <div id="zoom-container" class="relative origin-center transition-transform duration-200">
+                <div class="relative inline-block">
+                    <img id="modal-img" src="" class="max-w-[85vw] max-h-[65vh] object-contain shadow-[0_0_100px_rgba(255,255,255,0.05)]">
+                    <canvas id="paint-canvas" class="absolute inset-0 w-full h-full pointer-events-auto"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full p-8 flex flex-wrap justify-center gap-10 items-center bg-zinc-900/90 backdrop-blur-md border-t border-white/5">
+            <div class="flex flex-col items-center gap-2">
+                <span class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Ingrandimento Immagine</span>
+                <input type="range" min="1" max="5" step="0.1" value="1" id="zoom-slider" class="w-48 h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer">
+            </div>
+            <div class="flex flex-col items-center gap-2">
+                <span class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Spessore Pennello</span>
+                <input type="range" min="1" max="30" value="5" id="brush-slider" class="w-48 h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer">
+            </div>
+            <div class="flex gap-3" id="color-picker-container">
+                <!-- Colori generati via JS -->
+            </div>
+            <button onclick="clearCanvas()" class="bg-white text-black px-8 py-3 rounded-full font-black uppercase text-xs tracking-widest hover:bg-zinc-200 transition">Svuota Lavagna</button>
+        </div>
+    </div>
+
+    <!-- LOGICA IN JAVASCRIPT PURO (NIENTE ERRORI BABEL, NIENTE SCHERMO BIANCO) -->
+    <script>
+        const dadaWorks = [
+            { title: "Ruota di Bicicletta", year: "1913", image: "https://www.vivigreen.eu/wp-content/uploads/2022/03/duchamp-ruota.jpg", desc: "Il primo ready-made. Una ruota su uno sgabello.", sig: "Unione di due oggetti comuni.", msg: "L'arte è scelta, non solo manufatto.", artist: "Marcel Duchamp" },
+            { title: "Le Grand Verre", year: "1915-23", image: "https://www.culturefuture.net/wp-content/uploads/2021/03/1958-Le-grand-verre-au-Philadelphia-Museum-of-Art.jpeg", desc: "Opera complessa su vetro.", sig: "Meccanismi del desiderio.", msg: "L'arte come enigma intellettuale.", artist: "Marcel Duchamp" },
+            { title: "Fountain", year: "1917", image: "https://staticfanpage.akamaized.net/wp-content/uploads/2017/04/4088303823-3e58d3394b-b.jpg", desc: "Un orinatoio firmato R. Mutt.", sig: "Lo scandalo supremo.", msg: "L'idea conta più dell'esecuzione.", artist: "Marcel Duchamp" },
+            { title: "L.H.O.O.Q.", year: "1919", image: "https://arteref.com/wp-content/uploads/2013/03/L.H.O.O.Q..jpg", desc: "La Gioconda con i baffi.", sig: "Provocazione e ironia.", msg: "Niente è sacro, neanche i classici.", artist: "Marcel Duchamp" }
+        ];
+
+        const surrealWorks = [
+            { title: "Persistenza della Memoria", year: "1931", image: "https://upload.wikimedia.org/wikipedia/en/d/dd/The_Persistence_of_Memory.jpg", desc: "Orologi molli in un deserto.", sig: "Tempo che si scioglie.", msg: "La soggettività del tempo.", artist: "Salvador Dalí" },
+            { title: "Metamorfosi di Narciso", year: "1937", image: "https://www.lachiavedisophia.com/wp-content/uploads/2017/03/metamorfosi-di-narciso_La-chiave-di-Sophia.jpg", desc: "Narciso che diventa una mano.", sig: "Trasformazione psicologica.", msg: "La fragilità dell'ego.", artist: "Salvador Dalí" },
+            { title: "Cristo di S. Giovanni", year: "1951", image: "https://www.passion-estampes.com/deco/affiches/dali/dali-christ-saint-jean-de-la-croix.jpg", desc: "Cristo visto dall'alto.", sig: "Visione cosmica della croce.", msg: "L'armonia divina del cosmo.", artist: "Salvador Dalí" },
+            { title: "Ultima Cena", year: "1955", image: "https://cultura.biografieonline.it/wp-content/uploads/2014/08/Ultima-cena-Salvador-Dali.jpg", desc: "Visione sacra e matematica.", sig: "Misticismo e perfezione.", msg: "Il sacro incontra la scienza.", artist: "Salvador Dalí" }
+        ];
+
+        // Rendering delle griglie
+        function renderGrid(works, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = works.map(w => `
+                <div class="bg-zinc-900/50 rounded-[40px] p-8 border border-white/5 hover:border-white/20 transition-all group">
+                    <div class="relative overflow-hidden rounded-3xl mb-6">
+                        <img src="${w.image}" class="w-full h-80 object-cover cursor-zoom-in transition duration-700 group-hover:scale-105" onclick='openModal(${JSON.stringify(w).replace(/'/g, "&apos;")})'>
+                        <div class="absolute top-4 right-4 bg-black/80 px-4 py-2 rounded-full text-sm font-bold">${w.year}</div>
+                    </div>
+                    <h3 class="text-3xl font-black mb-4">${w.title}</h3>
+                    <p class="text-zinc-400 mb-6 text-lg">${w.desc}</p>
+                    <div class="space-y-3 text-sm border-t border-white/10 pt-6">
+                        <p><span class="text-zinc-500 uppercase font-bold mr-2">Significato:</span> ${w.sig}</p>
+                        <p><span class="text-zinc-500 uppercase font-bold mr-2">Messaggio:</span> ${w.msg}</p>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        renderGrid(dadaWorks, 'dada-container');
+        renderGrid(surrealWorks, 'surreal-container');
+
+        // Gestione Lavagna Canvas e Modale
+        const modal = document.getElementById('art-modal');
+        const canvas = document.getElementById('paint-canvas');
+        const ctx = canvas.getContext('2d');
+        const zoomContainer = document.getElementById('zoom-container');
+        
+        let isDrawing = false;
+        let brushColor = '#ff0000';
+        let brushSize = 5;
+        let currentZoom = 1;
+
+        function openModal(work) {
+            document.getElementById('modal-title').innerText = `${work.title} (${work.year})`;
+            document.getElementById('modal-artist').innerText = work.artist;
+            const img = document.getElementById('modal-img');
+            img.src = work.image;
+            
+            document.body.classList.add('no-scroll');
+            modal.classList.remove('hidden');
+
+            img.onload = () => {
+                canvas.width = img.clientWidth;
+                canvas.height = img.clientHeight;
+                clearCanvas();
+            };
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.classList.remove('no-scroll');
+            currentZoom = 1;
+            zoomContainer.style.transform = `scale(1)`;
+            document.getElementById('zoom-slider').value = 1;
+        }
+
+        // Eventi di disegno temporizzati/reattivi
+        function getCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * (canvas.width / rect.width),
+                y: (clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const { x, y } = getCoords(e);
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const { x, y } = getCoords(e);
+            ctx.strokeStyle = brushColor;
+            ctx.lineWidth = brushSize * (1 / currentZoom);
+            ctx.lineCap = 'round';
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        window.addEventListener('mouseup', () => isDrawing = false);
+
+        canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); });
+        canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); });
+        window.addEventListener('touchend', () => isDrawing = false);
+
+        // Controlli Zoom e Slider
+        document.getElementById('zoom-slider').addEventListener('input', (e) => {
+            currentZoom = parseFloat(e.target.value);
+            zoomContainer.style.transform = `scale(${currentZoom})`;
+        });
+
+        document.getElementById('brush-slider').addEventListener('input', (e) => {
+            brushSize = parseInt(e.target.value);
+        });
+
+        // Generazione Palette Colori
+        const colors = ['#ff0000', '#00ff00', '#00aaff', '#ffffff', '#ffff00'];
+        const colorContainer = document.getElementById('color-picker-container');
+        colorContainer.innerHTML = colors.map(c => `
+            <button class="w-10 h-10 rounded-full border-2 border-black/50 transition-transform hover:scale-110" style="background-color: ${c}" onclick="changeColor('${c}', this)"></button>
+        `).join('');
+
+        function changeColor(color, button) {
+            brushColor = color;
+            document.querySelectorAll('#color-picker-container button').forEach(b => b.classList.remove('scale-125', 'border-white'));
+            button.classList.add('scale-125', 'border-white');
+        }
+        
+        // Seleziona il primo colore di default
+        setTimeout(() => changeColor('#ff0000', colorContainer.querySelector('button')), 100);
     </script>
 </body>
 </html>
